@@ -1,0 +1,387 @@
+*, *:before, *:after {
+	box-sizing: border-box;
+}
+
+// Global imports
+// @import "./bootstrap-theme.min.scss";
+// @import "compass";
+// @import "susy";
+// @import "sassy-buttons";
+// @import "bootstrap-compass";
+// @import 'bootstrap-sass';
+
+$chatInputHeight: 50px;
+$padding: 1em;
+$titleBarHeight: 50px;
+
+*, *:after, *:before {
+	box-sizing: border-box;
+}
+
+.hidden {
+	display: none;
+}
+
+html, body, #main-container {
+	height: 100%;
+	width: 100%;
+	padding: 0;
+	color: #262626;
+	margin: 0;
+}
+
+#main-container {
+	padding-top: $titleBarHeight;
+}
+
+#title-bar {
+	top: 0;
+	position: absolute;
+	height: $titleBarHeight;
+	width: 100%;
+	line-height: $titleBarHeight;
+	padding: 0 $padding;
+	-webkit-app-region: drag;
+	-webkit-user-select: none;
+	cursor: move;
+	.tooltip.bottom .tooltip-arrow {
+		border-bottom-color: #eee;
+	}
+	.tooltip-inner {
+		max-width: 400px;
+		width: 400px;
+		font-weight: normal;
+		background-color: #eee;
+		color: black;
+		tr {
+			border: 1px solid #aaa;
+			text-align: left;
+		}
+	}
+	.icon {
+		width: 16px;
+		height: 16px;
+		top: 15px;
+		left: 15px;
+		position: absolute;
+	}
+	.title {
+		font-weight: bold;
+		font-size: 16px;
+		top: 15px;
+		left: 15px + 16px + 5px;
+		position: absolute;
+		display: block;
+		line-height: 16px;
+		color: #444;
+		// padding-right: 150px;
+		// width: 100%;
+		// height: 20px;
+		// overflow: hidden;
+	}
+
+	.notify, .notify a{
+		color: rgb(180, 25, 162);
+	}
+
+	// .title:after {
+	//   content: "";
+	//   text-align: right;
+	//   position: absolute;
+	//   bottom: 0;
+	//   right: 150px;
+	//   width: 20%;
+	//   height: 1.2em;
+	//   background: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 1) 50%);
+	// }
+
+	.now-playing {
+		font-weight: normal;
+		color: #888;
+	}
+	.drink-count {
+		font-weight: bold;
+	}
+	.menu {
+		-webkit-app-region: no-drag;
+		position: absolute;
+		top: $titleBarHeight/2 - 10px;
+		right: $titleBarHeight/2 - 10px;
+		color: #aaa;
+		a {
+			color: #aaa;
+		}
+		> span {
+			font-size: 20px;
+			cursor: pointer;
+			display: block;
+			float: left;
+			margin-left: 15px;
+			height: 20px;
+			line-height: 20px;
+		}
+	}
+	.dropdown-menu {
+		right: 0;
+		left: auto;
+		min-width: 100px;
+		a {
+			color: #262626;
+		}
+	}
+}
+
+.polls {
+	.panel.inactive {
+		background-color: #ddd;
+		color: #aaa;
+		.votes {
+			border-color: #aaa;
+		}
+	}
+	.disable .votes {
+		cursor: default;
+	}
+	ul {
+		padding-left: 0;
+		margin-bottom: 0;
+		li{
+			list-style: none;
+			margin-bottom: 5px;
+		}
+		.votes {
+			border: 2px solid #444;
+			padding: 5px;
+			min-width: 30px;
+			display: inline-block;
+			text-align: center;
+			cursor: pointer;
+			&.voted {
+				border-width: 4px;
+			}
+		}
+	}
+}
+
+.chat {
+	height: 100%;
+	padding-bottom: $chatInputHeight;
+	position: relative;
+	.embed {
+		max-width: 300px;
+		padding: 5px;
+		border: 1px solid #e5e5e5;
+		width: auto;
+		img, iframe {
+			width: 100%;
+		}
+	}
+	.user-list, .playlist, .poll-list{
+		right: 0;
+		top: 0;
+		height: 100%;
+		position: absolute;
+		background-color: white;
+		z-index: 100;
+		overflow: auto;
+		border-left: 1px solid #eaeaea;
+		ul {
+			padding-left: 1em;
+			margin: 0;
+		}
+		li {
+			list-style: none;
+		}
+	}
+
+	.user-list {
+		width: 200px;
+		.type2 {
+			color: green !important;
+		}
+		.type1 {
+			color: red !important;
+		}
+	}
+
+	.playlist {
+		width: 400px;
+		ul {
+			padding: 3px;
+		}
+
+		li {
+			padding: 3px;
+			border: 1px solid black;
+			margin-bottom: 3px;
+			border: 1px solid #B191B5;
+			height: 28px;
+			overflow: hidden;
+			&.active {
+				background: none repeat scroll 0 0 #FFF0B5;
+				border-color: #C39C00;
+				color: #C39C00;
+			}
+			&.volatile {
+				background: none repeat scroll 0 0 #FFA6A6;
+				color: rgb(168, 46, 46);
+				border-color: rgb(168, 46, 46);
+			}
+			&.volatile.active {
+				background: none repeat scroll 0 0 #FFF0B5;
+				border-color: rgb(168, 46, 46);
+			}
+		}
+	}
+
+	.poll-list {
+		width: 450px;
+		padding: 10px;
+	}
+
+	.login-box{
+		height: $chatInputHeight;
+		position: relative;
+		background: #fafafa;
+		border-top: 1px solid #eaeaea;
+		padding: 8px;
+	}
+	.input-box {
+		height: $chatInputHeight;
+		position: relative;
+		background: #fafafa;
+		border-top: 1px solid #eaeaea;
+		.emote-search {
+			position: absolute;
+			width: 100%;
+			bottom: $chatInputHeight;
+			padding: 1em;
+			max-height: 400px;
+			overflow-x: hidden;
+			overflow-y: auto;
+			background-color: white;
+			border-top: 1px solid #eaeaea;
+			-webkit-box-shadow: 0 0 3px;
+			div {
+				display: inline-block;
+				margin-right: 2px;
+			}
+		}
+		input {
+			width: 100%;
+			font-size: 1.2em;
+			padding: 0 $padding;
+			height: $chatInputHeight;
+			border: none;
+			-webkit-text-smoothing: antialiased;
+			-webkit-transition: height 150ms;
+			outline: none;
+
+			&::-webkit-input-placeholder {
+				-webkit-text-smoothing: antialiased;
+			}
+		}
+	}
+
+	.scroll-container {
+		height: 100%;
+		padding: 36px;
+		padding-top: 1em;
+	}
+
+	.scroller {
+		height: 100%;
+		overflow-y: scroll;
+		overflow-x: hidden;
+		padding-right: $padding;
+		.msg-row {
+			position: relative;
+			border-bottom: 1px solid #eee;
+			padding: 11px 140px 11px 0;
+
+			.thumbnail {
+				height: 110px;
+				width: auto;
+				display: inline-block;
+				vertical-align: bottom;
+				margin-bottom: 0;
+				img {
+					height: 100px;
+					display: inline-block;
+					max-width: initial;
+				}
+			}
+
+			&.request {
+				color: blue;
+			}
+
+			&.act {
+				color: #999;
+			}
+
+			&.drink {
+				color: purple;
+				text-align: center;
+				font-weight: bold;
+			}
+
+			.user {
+				font-weight: bold;
+				cursor: pointer;
+			}
+			&.squee {
+				background-color: #FFFED3;
+			}
+			&.highlighted {
+				background-color: #D3FFDE;
+			}
+			&.self {
+				background-color: #f9f9f9;
+			}
+			&.ask {
+				color: #888;
+			}
+			&.sweetiebot {
+				font-family: fixed-width;
+			}
+			&.rcv {
+				color: red;
+				font-size: 20px;
+			}
+			&.tabout {
+				text-align: center;
+				background-color: #FDFCDD;
+				padding: 0;
+			}
+			.quote {
+				color: green;
+			}
+			.spoiler {
+				background-color: #262626;
+				&:hover {
+					color: white;
+				}
+			}
+
+			.timestamp {
+				position: absolute;
+				top: 11px;
+				right: 11px;
+				color: #ccc;
+			}
+		}
+	}
+}
+
+::-webkit-scrollbar-track {
+	background-color: #fff;
+}
+
+::-webkit-scrollbar {
+	width: 1px;
+}
+
+::-webkit-scrollbar-thumb {
+	background-color: #ddd;
+}
