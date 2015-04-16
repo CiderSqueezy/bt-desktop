@@ -61,6 +61,8 @@ module.exports = React.createClass
 					</span>
 				when "drink"
 					<span>Drink <span dangerouslySetInnerHTML={{__html: emotedMsg}}/></span>
+				when "system"
+					<span dangerouslySetInnerHTML={{__html: emotedMsg}}/>
 				when "poll"
 					<span className="user" style={color: nickColor}>{msg.nick}</span>
 					<span> has created a new poll: <span dangerouslySetInnerHTML={{__html: emotedMsg}}/></span>

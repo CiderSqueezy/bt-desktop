@@ -18,13 +18,18 @@ module.exports = React.createClass
 			glyphicon: true
 			"glyphicon-check": true
 
+		squeeClass = 
+			notify: @props.squees.length
+			glyphicon: true
+			"glyphicon-envelope": true
+
 		<div id="title-bar" ng-controller="TitleBarCtrl">
 			<img className="icon" src="favicon.png"/>
 			<span className="title">
 				BerryTube {if @props.currentVideo then <span className="now-playing">Now playing: {decodeURIComponent(@props.currentVideo.videotitle)} <span className={"drink-count #{"hidden" unless @props.drinkCount}"}>({@props.drinkCount} Drinks)</span> </span>}
 			</span>
 			<div className="menu">
-				<span className="glyphicon glyphicon-envelope" ng-className="{'notify':squees.length}" title="squees" ng-click="showSquees()"></span>
+				<span className={cx(squeeClass)} title="squees" onClick={@props.onClickSquees}></span>
 				<span className={cx(pollClass)} title="Poll" onClick={@props.onClickPollsBtn}></span>
 				<span className="glyphicon glyphicon-user" title="Toggle user list" onClick={@props.onClickUserBtn}></span>
 				<span className="glyphicon glyphicon-list" title="Toggle playlist" onClick={@props.onClickPlaylistBtn}></span>

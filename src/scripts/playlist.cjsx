@@ -1,17 +1,10 @@
 cx = React.addons.classSet
 
-userSort = (a,b) ->
-	if a.type == b.type
-		a.nick.localeCompare(b.nick)
-	else
-		b.type - a.type
-
 module.exports = React.createClass
 	displayName: 'Playlist'
 	rowHeight: 28 + 3
 
 	componentDidMount: ->
-		console.log "mount"
 		@scrollToActive(true)
 
 	componentDidUpdate: ->
@@ -37,7 +30,7 @@ module.exports = React.createClass
 				active: @props.currentVideo && video.videoid == @props.currentVideo.videoid
 				volatile: video.volat
 			activeRow = i if rowClass.active
-			<li className={cx(rowClass)} key={video.videoid}>{decodeURIComponent(video.videotitle)}</li>
+			<li className={cx(rowClass)} key={video.videoid}>{decodeURIComponent(video.videotitle.replace(/&amp;/gi, "&"))}</li>
 
 		@activeRow = activeRow
 

@@ -28,6 +28,7 @@ html, body, #main-container {
 	padding: 0;
 	color: #262626;
 	margin: 0;
+	font-size:18px;
 }
 
 #main-container {
@@ -67,7 +68,7 @@ html, body, #main-container {
 	}
 	.title {
 		font-weight: bold;
-		font-size: 16px;
+		font-size: 1em;
 		top: 15px;
 		left: 15px + 16px + 5px;
 		position: absolute;
@@ -112,7 +113,7 @@ html, body, #main-container {
 			color: #aaa;
 		}
 		> span {
-			font-size: 20px;
+			font-size: 1em;
 			cursor: pointer;
 			display: block;
 			float: left;
@@ -342,12 +343,16 @@ html, body, #main-container {
 			&.ask {
 				color: #888;
 			}
+			&.system {
+				color: #888;
+				background-color: #D3FFDE;
+			}
 			&.sweetiebot {
 				font-family: fixed-width;
 			}
 			&.rcv {
 				color: red;
-				font-size: 20px;
+				font-size: 1.2em;
 			}
 			&.tabout {
 				text-align: center;

@@ -37,7 +37,7 @@ module.exports = React.createClass
 			if word[0] == "/"
 				@setState(searchEmoteString: word.replace(/^\//g,""))
 
-			match = _.find @props.users, (u) -> u.nick.toLowerCase().match(word)
+			match = _.find @props.users, (u) -> u.nick.toLowerCase().indexOf(word) == 0
 			if match
 				search = new RegExp(word + "$", "gi")
 				@setState(message: sentence.replace(search, "#{match.nick}: "))

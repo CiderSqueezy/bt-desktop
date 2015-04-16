@@ -13,8 +13,9 @@ module.exports = React.createClass
 		scroller = @refs.scroller.getDOMNode()
 		scroller.scrollTop = scroller.scrollHeight
 
-		window.ipc.on 'blur', @onBlur
-		window.ipc.on 'focus', @onFocus
+		if(window.ipc)
+			window.ipc.on 'blur', @onBlur
+			window.ipc.on 'focus', @onFocus
 
 	componentDidUpdate: ->
 		if @shouldScrollBottom

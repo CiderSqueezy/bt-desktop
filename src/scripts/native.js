@@ -1,11 +1,15 @@
 window.ipc = require('ipc')
+window.nativeApp = require('remote').require('app');
 
-// require('web-frame').setSpellCheckProvider("en-US", true, {
-// 	spellCheck: function(text) {
-// 		console.log("Spellcheck", text)
-// 		return !(require('spellchecker').isMisspelled(text));
-// 	}
-// });
+require('web-frame').setSpellCheckProvider("en-US", true, {
+	spellCheck: function(text) {
+		console.log("Spellcheck", text)
+		return !(require('spellchecker').isMisspelled(text));
+	}
+});
+
+
+
 
 // var remote = require('remote');
 // var Menu = remote.require('menu');
@@ -17,3 +21,5 @@ window.ipc = require('ipc')
 //   e.preventDefault();
 //   menu.popup(remote.getCurrentWindow());
 // }, false);
+// 
+// 

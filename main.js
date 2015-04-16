@@ -21,10 +21,10 @@ app.on('window-all-closed', function() {
 // initialization and ready for creating browser windows.
 app.on('ready', function() {
 	var template = [{
-		label: 'Atom Shell',
+		label: 'BerryTube',
 		submenu: [
 		{
-			label: 'About Atom Shell',
+			label: 'About BerryTube',
 			selector: 'orderFrontStandardAboutPanel:'
 		},
 		{
@@ -144,15 +144,15 @@ app.on('ready', function() {
 		"auto-hide-menu-bar": true
 	});
 
-	mainWindow.on('new-window', function(e, url) {
+	mainWindow.webContents.on('new-window', function(e, url) {
 		console.log("NEW WINDOW", e, url)
 		e.preventDefault();
 		shell.openExternal(url);
 	});
 	
 	// and load the index.html of the app.
-	mainWindow.loadUrl('file://' + __dirname + '/index.html');
-	// mainWindow.loadUrl("http://localhost:8080/");
+	// mainWindow.loadUrl('file://' + __dirname + '/index.html');
+	mainWindow.loadUrl("http://localhost:8080/");
 
 
 	mainWindow.on('blur', function(e) {

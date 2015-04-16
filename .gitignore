@@ -28,5 +28,7 @@ public/
 .fontcustom-manifest.json
 
 Atom.app
+BerryTube.app
 dist/
 *.sublime-*
+

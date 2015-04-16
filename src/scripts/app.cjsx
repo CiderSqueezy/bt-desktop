@@ -36,6 +36,15 @@ if !window.appState
 		polls: []
 		drinkCount: 0
 
+		sounds:
+			squee: false
+			drinks: false
+			poll: false
+
+# if localStorage.getItem("nick") && localStorage.getItem("pass")
+# 	appState.viewer = 
+# 		nick: localStorage.getItem("nick") || ""
+# 		pass: localStorage.getItem("pass") || ""	
 
 	# window.appState.chatMessages = mockChat
 
@@ -73,9 +82,12 @@ module.exports = React.createClass
 		socket.on "updatePoll", @updatePoll
 
 		# Login
+		socket.on "connect", @login
+		socket.on "reconnecting", @reconnecting
+		socket.on "reconnect", @login
+		socket.on "loginError", @loginError
 		socket.on "setNick", @setNick
 		socket.on "kicked", @kicked
-		socket.on "reconnecting", @reconnect
 
 	# Playlist
 
@@ -108,6 +120,7 @@ module.exports = React.createClass
 			return
 
 		if data.queue
+			index++
 			appState.playlist.splice(index,0,data.video)
 		else
 			index = appState.playlist.length
@@ -119,9 +132,9 @@ module.exports = React.createClass
 
 	deleteVideo: (data) ->
 		console.log "deleteVideo", data
-		if appState.currentVideo.videoid != data.sanityid
-			socket.emit("refreshMyPlaylist")
-			return
+		# if appState.currentVideo.videoid != data.sanityid
+		# 	socket.emit("refreshMyPlaylist")
+		# 	return
 
 		appState.playlist.splice(data.position,1)
 		@setState(playlist: appState.playlist)
@@ -134,13 +147,13 @@ module.exports = React.createClass
 
 		if !data.msg.ghost && data.msg.nick != appState.viewer?.nick and isSquee(data.msg.msg)
 			data.msg.isSquee = true
-			squeeSound.play()
 			appState.squees.unshift data.msg
+			@onSquee(data.msg)
 		else if data.msg.nick == appState.viewer.nick
 			data.msg.isSelf = true
 
-		if data.msg.emote is "drink"
-			drinkSound.play()
+		# if data.msg.emote is "drink"
+			# drinkSound.play()
 
 		# if appState.chatMessages.length > 1500
 		# 	appState.chatMessages = appState.chatMessages.slice(appState.chatMessages.length-1000)
@@ -148,6 +161,18 @@ module.exports = React.createClass
 		@setState
 			squees: appState.squees
 			chatMessages: appState.chatMessages
+
+	onSquee: (msg) ->
+		nativeApp.dock.setBadge("#{@state.squees.length}")
+		nativeApp.dock.bounce("critical")
+		squeeSound.play()
+		new Notification msg.nick,
+			body: msg.msg
+
+	toggleSqueeList: ->
+		nativeApp.dock.setBadge("")
+		appState.squees = []
+		@setState(squees: appState.squees)
 
 	sendMessage: (msg) ->
 		socket.emit 'chat',
@@ -192,15 +217,37 @@ module.exports = React.createClass
 
 	# Login
 
-	reconnect: ->
+	reconnecting: ->
+		console.log "Reconnecting..."
 		@newMessage
 			msg:
+				emote: system
 				msg: "Connection lost, attempting to reconnect..."
+				timestamp: (new Date()).getTime()
+
+	onLoginSubmit: (viewer) ->
+		@setState(viewer: viewer, @login)
+
+	loginError: (data) ->
+		@setState
+			viewer: false
+			loginError: data.message
+
+	login: ->
+		return unless localStorage.getItem("nick") && localStorage.getItem("pass")
+		socket.emit "setNick",
+			nick: localStorage.getItem("nick") || ""
+			pass: localStorage.getItem("pass") || ""	
+		socket.emit('myPlaylistIsInited')
 
 	setNick: (data) ->
-		appState.viewer =
+		appState.viewer = 
 			nick: data
-		@setState(viewer: appState.viewer)
+			pass: localStorage.getItem("pass") || ""	
+		appState.loginError = false
+		@setState
+			viewer: appState.viewer
+			loginError: appState.loginError
 
 	kicked: (reason) ->
 		msg = "You have been kicked"
@@ -234,11 +281,13 @@ module.exports = React.createClass
 		<div id="main-container" className="container">
 			<TitleBar
 				polls={@state.polls}
+				squees={@state.squees}
 				currentVideo={@state.currentVideo}
 				drinkCount={@state.drinkCount}
+				onClickSquees={@toggleSqueeList}
+				onClickPollsBtn={@togglePollList}
 				onClickUserBtn={@toggleUserList}
-				onClickPlaylistBtn={@togglePlaylist}
-				onClickPollsBtn={@togglePollList}/>
+				onClickPlaylistBtn={@togglePlaylist} />
 			<div className="chat">
 				{if @state.userlistOpen
 					<UserList users={@state.users} />}
@@ -253,12 +302,14 @@ module.exports = React.createClass
 				<ChatBox
 					emotesEnabled={@state.emotesEnabled}
 					messages={@state.chatMessages}/>
-				{if @state.viewer
+				{if @state.viewer && !@state.loginError
 					<ChatInput
 						users={@state.users}
 						onSubmit={@sendMessage}/>
 				else
-					<LoginForm socket={socket} />
+					<LoginForm
+						onSubmit={@onLoginSubmit}
+						error={@state.loginError} />
 				}
 			</div>
 		</div>
