@@ -45,17 +45,17 @@ gulp.task('copy-assets', ->
 # need to edit the generated scss file at src/styles/_fontcustom.scss to remove
 # its font-face imports.
 # Font compilation
-gulp.task('font', $.shell.task([
-  'fontcustom compile'
-]))
+# gulp.task('font', $.shell.task([
+#   'fontcustom compile'
+# ]))
 
-gulp.task('font-base-64', ->
-  gulp.src('assets/fonts/*.ttf')
-    .pipe($.rename('fontcustom.ttf'))
-    .pipe($.cssfont64())
-    .pipe($.rename('_fontcustom_embedded.scss'))
-    .pipe(gulp.dest('src/styles/'))
-)
+# gulp.task('font-base-64', ->
+#   gulp.src('assets/fonts/*.ttf')
+#     .pipe($.rename('fontcustom.ttf'))
+#     .pipe($.cssfont64())
+#     .pipe($.rename('_fontcustom_embedded.scss'))
+#     .pipe(gulp.dest('src/styles/'))
+# )
 
 gulp.task "webpack:build", (callback) ->
   # Run webpack.
