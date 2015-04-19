@@ -33,7 +33,8 @@
     "react-timeago": "~1.0.1",
     "react-bootstrap": "~0.13.3",
     "bootstrap": "~3.3.2",
-    "spellchecker": "~2.0.0"
+    "spellchecker": "~2.0.0",
+    "apng-canvas": "git+https://git@github.com/CiderSqueezy/apng-canvas.git"
   },
   "homepage": "https://github.com/KyleAMathews/coffee-react-quickstart",
   "keywords": [
