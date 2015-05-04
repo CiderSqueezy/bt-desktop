@@ -5,7 +5,7 @@ Bem = require "./berrymotes"
 TimeAgo = require "./timeago"
 $ = require "jquery"
 cx = React.addons.classSet
-wutColors = require "./wutcolors"
+wutColors = require "./wutColors"
 
 
 module.exports = React.createClass
