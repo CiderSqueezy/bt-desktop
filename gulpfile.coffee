@@ -110,9 +110,9 @@ gulp.task 'watch', ['copy-assets', 'webpack-dev-server'], ->
 
 
 
-atomshell = require('gulp-atom-shell');
  
 gulp.task 'package-native-mac', ["build"], ->
+    atomshell = require('gulp-atom-shell');
     return gulp.src(['public/**', "package.json", "main.js"])
         .pipe(atomshell({
             platform: "darwin"
@@ -124,6 +124,7 @@ gulp.task 'package-native-mac', ["build"], ->
         .pipe(atomshell.zfsdest('dist/BerryTube.mac.zip'));
 
 gulp.task 'package-native-win', ["build"], ->
+    atomshell = require('gulp-atom-shell');
     return gulp.src(['public/**', "package.json", "main.js"])
         .pipe(atomshell({
             platform: "win32"
