@@ -103,8 +103,7 @@ gulp.task 'default', ->
 
 gulp.task 'build', ['webpack:build', 'copy-assets']
 
-gulp.task 'heroku', ->
-  gulp.start 'build'
+gulp.task 'heroku:production', ['build']
 
 gulp.task 'watch', ['copy-assets', 'webpack-dev-server'], ->
   gulp.watch(['assets/**', 'src/scripts/native.js'], ['copy-assets'])
