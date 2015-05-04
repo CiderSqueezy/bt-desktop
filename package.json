@@ -34,7 +34,10 @@
     "react-bootstrap": "~0.13.3",
     "bootstrap": "~3.3.2",
     "spellchecker": "~2.0.0",
-    "apng-canvas": "git+https://git@github.com/CiderSqueezy/apng-canvas.git"
+    "apng-canvas": "git+https://git@github.com/CiderSqueezy/apng-canvas.git",
+    "node-sass": "~2.0.0-beta",
+    "sass-loader": "~0.4.0-beta.1",
+    "bootstrap-sass": "~3.3.3"
   },
   "homepage": "https://github.com/KyleAMathews/coffee-react-quickstart",
   "keywords": [
@@ -53,9 +56,6 @@
     "test": "jest"
   },
   "devDependencies": {
-    "gulp-atom-shell": "~0.1.4",
-    "node-sass": "~2.0.0-beta",
-    "sass-loader": "~0.4.0-beta.1",
-    "bootstrap-sass": "~3.3.3"
+    "gulp-atom-shell": "~0.1.4"
   }
 }

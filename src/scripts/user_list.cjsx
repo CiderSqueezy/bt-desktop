@@ -1,4 +1,4 @@
-wutColors = require "./wutcolors"
+wutColors = require "./wutColors"
 
 userSort = (a,b) ->
 	if a.type == b.type
