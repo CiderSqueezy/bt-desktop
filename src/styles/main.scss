@@ -79,7 +79,7 @@ html, body, #main-container {
 		display: block;
 		line-height: 20px;
 		color: #444;
-		padding-right: 130px;
+		padding-right: 145px;
 		// width: 100%;
 		// height: 20px;
 		// overflow: hidden;
@@ -403,30 +403,33 @@ html, body, #main-container {
 	}
 }
 
-.chat {
-	.user-list, .playlist, .poll-list{
-		box-shadow: rgba(0,0,0,0.5) 0 0 4px 0;
-	}
-	.scroll-container {
-		padding: 0;
-	}
-	.scroller {
-		padding: none;
-		.msg-row {
-			padding: 12px;
-			.timestamp {
-				display: none;
+
+@media only screen and (max-device-width: 480px) {
+	.chat {
+		.user-list, .playlist, .poll-list{
+			box-shadow: rgba(0,0,0,0.5) 0 0 4px 0;
+		}
+		.scroll-container {
+			padding: 0;
+		}
+		.scroller {
+			padding: none;
+			.msg-row {
+				padding: 12px;
+				.timestamp {
+					display: none;
+				}
 			}
 		}
 	}
-}
-#title-bar {
-	box-shadow: rgba(0,0,0,0.5) 0 0 4px 0;
-	.now-playing {
-		display: none;
-	}
-	.menu {
-		right: 0;
+	#title-bar {
+		box-shadow: rgba(0,0,0,0.5) 0 0 4px 0;
+		.now-playing {
+			display: none;
+		}
+		.menu {
+			right: 0;
+		}
 	}
 }
 
