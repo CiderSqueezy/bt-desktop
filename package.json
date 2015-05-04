@@ -37,7 +37,8 @@
     "apng-canvas": "git+https://git@github.com/CiderSqueezy/apng-canvas.git",
     "node-sass": "~2.0.0-beta",
     "sass-loader": "~0.4.0-beta.1",
-    "bootstrap-sass": "~3.3.3"
+    "bootstrap-sass": "~3.3.3",
+    "express": "~4.12.3"
   },
   "homepage": "https://github.com/KyleAMathews/coffee-react-quickstart",
   "keywords": [
