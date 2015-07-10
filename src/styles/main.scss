@@ -185,7 +185,7 @@ html, body, #main-container {
 			width: 100%;
 		}
 	}
-	.user-list, .playlist, .poll-list{
+	.user-list, .playlist, .poll-list, .squee-inbox{
 		max-width: 85%;
 		right: 0;
 		top: 0;
@@ -247,6 +247,25 @@ html, body, #main-container {
 	.poll-list {
 		width: 450px;
 		padding: 10px;
+	}
+
+	.squee-inbox {
+		width: 450px;
+		padding: 10px;
+		.msg-row {
+			padding-left: 10px;
+			&.squee {
+				background: #fff;
+			}
+		}
+		.clear-all {
+			position: absolute;
+			top: 10px;
+			right: 10px;
+			color: #aaa;
+			z-index: 1000;
+			cursor: pointer;
+		}
 	}
 
 	.login-box{
@@ -319,92 +338,99 @@ html, body, #main-container {
 		overflow-y: scroll;
 		overflow-x: hidden;
 		padding-right: $padding;
-		.msg-row {
-			position: relative;
-			border-bottom: 1px solid #eee;
-			padding: 11px 140px 11px 0;
+	}
+}
 
-			.thumbnail {
-				height: 110px;
-				width: auto;
-				display: inline-block;
-				vertical-align: bottom;
-				margin-bottom: 0;
-				img {
-					height: 100px;
-					display: inline-block;
-					max-width: initial;
-				}
-			}
+.msg-row {
+	position: relative;
+	border-bottom: 1px solid #eee;
+	padding: 11px 90px 11px 0;
 
-			&.request {
-				color: blue;
-			}
-
-			&.act {
-				color: #999;
-			}
-
-			&.drink {
-				color: purple;
-				text-align: center;
-				font-weight: bold;
-			}
-
-			.user {
-				font-weight: bold;
-				cursor: pointer;
-			}
-			&.squee {
-				background-color: #FFFED3;
-			}
-			&.highlighted {
-				background-color: #D3FFDE;
-			}
-			&.self {
-				background-color: #f9f9f9;
-			}
-			&.ask {
-				color: #888;
-			}
-			&.system {
-				color: #888;
-				background-color: #D3FFDE;
-			}
-			&.sweetiebot {
-				font-family: fixed-width;
-			}
-			&.rcv {
-				color: red;
-				font-size: 1.2em;
-			}
-			&.tabout {
-				text-align: center;
-				background-color: #FDFCDD;
-				padding: 0;
-			}
-			.quote {
-				color: green;
-			}
-			.spoiler {
-				background-color: #262626;
-				&:hover {
-					color: white;
-				}
-			}
-
-			.timestamp {
-				position: absolute;
-				top: 11px;
-				right: 11px;
-				color: #ccc;
-			}
+	.thumbnail {
+		height: 110px;
+		width: auto;
+		display: inline-block;
+		vertical-align: bottom;
+		margin-bottom: 0;
+		&.yt {
+			border-color: red;
 		}
+		img {
+			height: 100px;
+			display: inline-block;
+			max-width: initial;
+		}
+	}
+
+	&.request {
+		color: blue;
+	}
+
+	&.act {
+		color: #999;
+	}
+
+	&.drink {
+		color: purple;
+		text-align: center;
+		font-weight: bold;
+	}
+
+	.user {
+		font-weight: bold;
+		cursor: pointer;
+	}
+	&.squee {
+		background-color: #FFFED3;
+	}
+	&.highlighted {
+		background-color: #D3FFDE;
+	}
+	&.seoncdaryHighlighted {
+		background-color: #B3F1BD;
+	}
+	&.self {
+		background-color: #f9f9f9;
+	}
+	&.ask {
+		color: #888;
+	}
+	&.system {
+		color: #888;
+		background-color: #D3FFDE;
+	}
+	&.sweetiebot {
+		font-family: fixed-width;
+	}
+	&.rcv {
+		color: red;
+		font-size: 1.2em;
+	}
+	&.tabout {
+		text-align: center;
+		background-color: #FDFCDD;
+		padding: 0;
+	}
+	.quote {
+		color: green;
+	}
+	.spoiler {
+		background-color: #262626;
+		&:hover {
+			color: white;
+		}
+	}
+
+	.timestamp {
+		position: absolute;
+		top: 11px;
+		right: 11px;
+		color: #ccc;
 	}
 }
 
 
-@media only screen and (max-device-width: 480px) {
+@media only screen and (max-width: 480px) {
 	.chat {
 		.user-list, .playlist, .poll-list{
 			box-shadow: rgba(0,0,0,0.5) 0 0 4px 0;

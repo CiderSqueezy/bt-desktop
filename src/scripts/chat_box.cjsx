@@ -45,6 +45,7 @@ module.exports = React.createClass
 		chatRows = @props.messages.map (msg, i) =>
 			<ChatMessage
 				highlighted={msg.nick == @state.selectedNick}
+				seoncdaryHighlighted={msg.msg.indexOf(@state.selectedNick) != -1}
 				renderEmotes={@props.emotesEnabled && Bem.doneLoading && i > renderEmoteIndex}
 				onSelectNick={@selectNick}
 				msg={msg}

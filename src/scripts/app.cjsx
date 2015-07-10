@@ -5,13 +5,20 @@ UserList = require "./user_list"
 Playlist = require "./playlist"
 LoginForm = require "./login_form"
 PollsModal = require "./polls_modal"
+SqueeInbox = require "./squee_inbox"
 
 io = require 'socket.io-client'
 _ = require 'underscore'
 
 # window.mockChat = require "./chatlog"
 
-socket = io.connect('berrytube.tv:8344')
+socket = io.connect('berrytube.tv:8344', {
+	'connect timeout': 5000, 
+	'reconnect': true, 
+	'reconnection delay': 500, 
+	'reopen delay': 500, 
+	'max reconnection attempts': 10 
+})
 
 
 squeeSound = new Audio("sounds/notify.wav")
@@ -31,9 +38,12 @@ if !window.appState
 		currentVideo: null
 
 		pollListOpen: false
-		squees: []
-		chatMessages: []
 		polls: []
+
+		squeeInboxOpen: false
+		squees: []
+
+		chatMessages: []
 		drinkCount: 0
 
 		sounds:
@@ -41,12 +51,7 @@ if !window.appState
 			drinks: false
 			poll: false
 
-# if localStorage.getItem("nick") && localStorage.getItem("pass")
-# 	appState.viewer = 
-# 		nick: localStorage.getItem("nick") || ""
-# 		pass: localStorage.getItem("pass") || ""	
-
-	# window.appState.chatMessages = mockChat
+# window.appState.chatMessages = mockChat
 
 isSquee = (msg) -> appState.viewer && msg.toLowerCase().indexOf(appState.viewer.nick.toLowerCase()) != -1
 
@@ -132,9 +137,9 @@ module.exports = React.createClass
 
 	deleteVideo: (data) ->
 		console.log "deleteVideo", data
-		# if appState.currentVideo.videoid != data.sanityid
-		# 	socket.emit("refreshMyPlaylist")
-		# 	return
+		if appState.currentVideo.videoid != data.sanityid
+			socket.emit("refreshMyPlaylist")
+			return
 
 		appState.playlist.splice(data.position,1)
 		@setState(playlist: appState.playlist)
@@ -163,16 +168,27 @@ module.exports = React.createClass
 			chatMessages: appState.chatMessages
 
 	onSquee: (msg) ->
-		nativeApp.dock.setBadge("#{@state.squees.length}")
-		nativeApp.dock.bounce("critical")
+		nativeApp?.dock.setBadge("#{@state.squees.length}")
+		nativeApp?.dock.bounce("critical")
 		squeeSound.play()
 		new Notification msg.nick,
 			body: msg.msg
 
 	toggleSqueeList: ->
-		nativeApp.dock.setBadge("")
-		appState.squees = []
-		@setState(squees: appState.squees)
+		nativeApp?.dock.setBadge("")
+		appState.squeeInboxOpen = !appState.squeeInboxOpen 
+		@setState(squeeInboxOpen: appState.squeeInboxOpen)
+
+	toggleEmotes: ->
+		appState.emotesEnabled = !appState.emotesEnabled
+		@setState(emotesEnabled: appState.emotesEnabled)
+
+	clearSquees: ->
+		appState.squees = [];
+		appState.squeeInboxOpen = false;
+		@setState
+			squees: appState.squees,
+			squeeInboxOpen: appState.squeeInboxOpen
 
 	sendMessage: (msg) ->
 		socket.emit 'chat',
@@ -221,7 +237,7 @@ module.exports = React.createClass
 		console.log "Reconnecting..."
 		@newMessage
 			msg:
-				emote: system
+				emote: "system"
 				msg: "Connection lost, attempting to reconnect..."
 				timestamp: (new Date()).getTime()
 
@@ -284,10 +300,12 @@ module.exports = React.createClass
 				squees={@state.squees}
 				currentVideo={@state.currentVideo}
 				drinkCount={@state.drinkCount}
+				emotesEnabled={@state.emotesEnabled}
 				onClickSquees={@toggleSqueeList}
 				onClickPollsBtn={@togglePollList}
 				onClickUserBtn={@toggleUserList}
-				onClickPlaylistBtn={@togglePlaylist} />
+				onClickPlaylistBtn={@togglePlaylist}
+				onClickEmotes={@toggleEmotes}/>
 			<div className="chat">
 				{if @state.userlistOpen
 					<UserList users={@state.users} />}
@@ -299,6 +317,11 @@ module.exports = React.createClass
 					<PollsModal
 						polls={@state.polls}
 						onVote={@vote}/>}
+				{if @state.squeeInboxOpen
+					<SqueeInbox
+						squees={@state.squees}
+						onClear={@clearSquees}
+						/>}
 				<ChatBox
 					emotesEnabled={@state.emotesEnabled}
 					messages={@state.chatMessages}/>

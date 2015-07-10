@@ -982,7 +982,7 @@ Bem.emoteRefresh = (cache) ->
       Bem.applyAnimation = applyAnimation
       Bem.emotes = data
       Bem.buildEmoteMap()
-      Bem.walk document.body
+      # Bem.walk document.body
 
       Bem.emotes.forEach (em) ->
         img = em["background-image"]

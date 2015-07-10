@@ -29,7 +29,7 @@ gulp.task('css', ->
 )
 
 gulp.task('copy-assets', ->
-    gulp.src(['assets/**', 'src/scripts/native.js'])
+    gulp.src(['assets/**', 'src/scripts/native.js', 'main.js', 'package.json'])
       .pipe(gulp.dest('public'))
       .pipe($.size())
 )

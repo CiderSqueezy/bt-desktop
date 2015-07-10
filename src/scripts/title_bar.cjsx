@@ -29,7 +29,7 @@ module.exports = React.createClass
 				BerryTube {if @props.currentVideo then <span className="now-playing">Now playing: {decodeURIComponent(@props.currentVideo.videotitle)} <span className={"drink-count #{"hidden" unless @props.drinkCount}"}>({@props.drinkCount} Drinks)</span> </span>}
 			</span>
 			<div className="menu">
-				<span className={cx(squeeClass)} title="squees" onClick={@props.onClickSquees}></span>
+				{if @props.squees.length then <span className={cx(squeeClass)} title="squees" onClick={@props.onClickSquees}></span>}
 				<span className={cx(pollClass)} title="Poll" onClick={@props.onClickPollsBtn}></span>
 				<span className="glyphicon glyphicon-user" title="Toggle user list" onClick={@props.onClickUserBtn}></span>
 				<span className="glyphicon glyphicon-list" title="Toggle playlist" onClick={@props.onClickPlaylistBtn}></span>
@@ -39,11 +39,11 @@ module.exports = React.createClass
 							<span className="glyphicon glyphicon-cog"></span>
 						</a>
 						<ul className="dropdown-menu dropdown-menu-right">
-							<li ><a onClick={@showBMSettings}><i className="glyphicon glyphicon-heart-empty"></i> Emote Settings</a></li>
-							<li ><a ng-click="refreshEmotes()"><i className="glyphicon glyphicon-refresh"></i> Refresh Emotes</a></li>
-							<li ng-show="inNativeApp" className="divider"></li>
-							<li ng-show="inNativeApp"><a ng-click="showDevTools()"><i className="glyphicon glyphicon-wrench"></i> Show Devtools</a></li>
-							<li ng-show="User" className="divider"></li>
+							<li><a onClick={@props.onClickEmotes}><i className="glyphicon glyphicon-heart-empty"></i> {if @props.emotesEnabled then "Disable" else "Enable"} Emotes</a></li>
+							<li><a onClick={Bem.dataRefresh}><i className="glyphicon glyphicon-refresh"></i> Refresh Emotes</a></li>
+							{if window.nativeApp then <li className="divider"></li>}
+							{if window.nativeApp then <li><a onClick={@showDevTools}><i className="glyphicon glyphicon-wrench"></i> Show Devtools</a></li>}
+							<li className="divider"></li>
 							<li ng-show="User" ><a ng-click="logout()"><i className="glyphicon glyphicon-log-out"></i> Logout</a></li>
 						</ul>
 					</span>

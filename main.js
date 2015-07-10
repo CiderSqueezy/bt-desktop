@@ -151,8 +151,9 @@ app.on('ready', function() {
 	});
 	
 	// and load the index.html of the app.
-	// mainWindow.loadUrl('file://' + __dirname + '/index.html');
-	mainWindow.loadUrl("http://localhost:8080/");
+	mainWindow.loadUrl('file://' + __dirname + '/index.html');
+	// mainWindow.loadUrl("http://localhost:8080/");
+	// mainWindow.loadUrl("http://bt-desktop.cidersqueezy.com/");
 
 
 	mainWindow.on('blur', function(e) {
