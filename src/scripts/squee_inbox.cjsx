@@ -1,4 +1,3 @@
-$ = require "jquery"
 cx = React.addons.classSet
 ChatMessage = require "./chat_message"
 

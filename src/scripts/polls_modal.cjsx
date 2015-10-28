@@ -1,5 +1,4 @@
 Bem = require "./berrymotes"
-$ = require "jquery"
 cx = React.addons.classSet
 
 Poll = React.createClass

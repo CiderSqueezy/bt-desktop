@@ -17,7 +17,7 @@ module.exports = React.createClass
 		return unless Bem.doneLoading
 		Bem.postEmoteEffects($(@getDOMNode()))
 	# 	Bem.walk @getDOMNode()
-	
+
 
 	shouldComponentUpdate: (nextProps, nextState) ->
 		nextProps.renderEmotes != @props.renderEmotes || nextProps.highlighted != @props.highlighted || nextProps.seoncdaryHighlighted != @props.seoncdaryHighlighted || nextProps.msg != @props.msg
@@ -54,7 +54,7 @@ module.exports = React.createClass
 				when "request"
 					<span>
 						<span className="user" style={color: nickColor}>{msg.nick}</span>
-						requests 
+						requests
 						<span dangerouslySetInnerHTML={{__html: emotedMsg}}/>
 					</span>
 				when "drink"

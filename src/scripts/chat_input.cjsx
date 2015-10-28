@@ -89,6 +89,5 @@ module.exports = React.createClass
 				onChange={@onChange}
 				onKeyUp={@handleKeyUp}
 				onKeyDown={@handleKeyDown}
-				microcomplete="chatInput"
-				source="users() | userNick" />
+				/>
 		</div>

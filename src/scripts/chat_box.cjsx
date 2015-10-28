@@ -7,7 +7,7 @@ module.exports = React.createClass
 
 	getInitialState: ->
 		selectedNick: false
-		lastSeenIndex: 0 
+		lastSeenIndex: 0
 
 	componentDidMount: ->
 		scroller = @refs.scroller.getDOMNode()
