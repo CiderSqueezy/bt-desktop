@@ -10,7 +10,7 @@ require('crash-reporter').start();
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the javascript object is GCed.
-var mainWindow = null;
+var mainWindow, tcWindow = null;
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function() {
@@ -173,6 +173,24 @@ app.on('ready', function() {
 	});
 
 
+	// tcWindow = new BrowserWindow({
+	// 	width: 960,
+	// 	height: 590,
+	// 	'web-preferences':{
+	// 		'plugins': true
+	// 	},
+	// 	frame: false,
+	// 	"auto-hide-menu-bar": true
+	// });
+	// tcWindow.webContents.on('new-window', function(e, url) {
+	// 	e.preventDefault();
+	// });
+	// tcWindow.webContents.on('did-finish-load', function(e, url) {
+	// 	tcWindow.webContents.insertCSS("#left_block, html, body, #tinychat, #tinychat_sub, #wrapper, #page, #container, #room, #chat {width: 100% !important; height: 100% !important; box-sizing: border-box; margin: 0; padding: 0 !important;} #iframe_ad, #header, #room_header, #share-bar, #footer {display: none;} body {width: calc(100% + 282px) !important; overflow: hidden; left: -8px; position: relative; top: -12px; height: calc(100% + 93px) !important; } body:after {content: ''; position: absolute; top: 0; left: 240px; height: 54px; width: calc(100% - 576px); -webkit-app-region: drag; cursor: move;}");
+	// });
+	// tcWindow.loadUrl("http://tinychat.com/berrytube");
+	// tcWindow.on('closed', function() {
+	// 	tcWindow = null;
+	// });
 
 });
-
