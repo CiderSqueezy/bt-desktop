@@ -12,7 +12,7 @@ module.exports = {
   debug: true,
   output: {
     path: path.join(__dirname, "public"),
-    filename: 'bundle.js'
+    filename: 'app-bundle.js'
   },
   resolveLoader: {
     modulesDirectories: ['node_modules']
@@ -23,7 +23,7 @@ module.exports = {
     new webpack.IgnorePlugin(/vertx|ipc/) // https://github.com/webpack/webpack/issues/353
   ],
   resolve: {
-    extensions: ['', '.js', '.cjsx', '.coffee']
+    extensions: ['', '.js', 'jsx', '.cjsx', '.coffee']
   },
   module: {
     loaders: [
@@ -31,6 +31,7 @@ module.exports = {
           "includePaths[]=" +
             (path.resolve(__dirname, "./node_modules")) },
       // { test: /\.css$/, loaders: ['style', 'css']},
+      { test: /\.jsx$/, exclude: /(node_modules|bower_components)/, loaders: ['react-hot', 'babel']},
       { test: /\.cjsx$/, loaders: ['react-hot', 'coffee', 'cjsx']},
       { test: /\.coffee$/, loader: 'coffee' }
     ]

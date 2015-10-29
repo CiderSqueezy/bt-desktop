@@ -1,4 +1,3 @@
-Bem = require "./berrymotes"
 cx = React.addons.classSet
 
 Poll = React.createClass

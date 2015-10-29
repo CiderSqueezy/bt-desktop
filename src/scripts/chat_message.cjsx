@@ -1,6 +1,4 @@
-Bem = require "./berrymotes"
 TimeAgo = require "./timeago"
-$ = require "jquery"
 cx = React.addons.classSet
 wutColors = require "./wutColors"
 
