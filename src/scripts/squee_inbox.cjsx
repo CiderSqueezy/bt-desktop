@@ -13,6 +13,6 @@ module.exports = React.createClass
 
 	render: ->
 		<div className="squee-inbox">
-			<div onClick={@props.onClear} title="Clear Squees" className="clear-all glyphicon glyphicon-trash"></div>
+			<i onClick={@props.onClear} title="Clear Squees" className="material-icons clear-all">clear_all</i>
 			{@props.squees.map(@renderMessage)}
 		</div>
