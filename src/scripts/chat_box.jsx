@@ -1,4 +1,4 @@
-var ChatMessage = require("./chat_message")
+var ChatMessage = require("./chat_message.jsx")
 var React = require("react")
 
 module.exports = class ChatBox extends React.Component {
@@ -15,8 +15,11 @@ module.exports = class ChatBox extends React.Component {
 		scroller.scrollTop = scroller.scrollHeight
 
 		if(window.ipc) {
-			window.ipc.on("blur", this.onBlur)
-			window.ipc.on("focus", this.onFocus)
+			window.ipc.on("blur", this.onBlur.bind(this))
+			window.ipc.on("focus", this.onFocus.bind(this))
+		} else {
+			window.addEventListener("blur", this.onBlur.bind(this))
+			window.addEventListener("focus", this.onFocus.bind(this))
 		}
 	}
 
@@ -72,7 +75,7 @@ module.exports = class ChatBox extends React.Component {
 
 		if(this.state.lastSeenIndex && this.state.lastSeenIndex != this.props.messages.length){
 			var taboutRow = <ChatMessage
-				msg={{emote: "tabout", msg: "#{this.props.messages.length-this.state.lastSeenIndex}"}}
+				msg={{emote: "tabout", msg: `▽ ${this.props.messages.length-this.state.lastSeenIndex} New messages since you tabbed out ▽`}}
 				key={"tabout"}/>
 			chatRows.splice(this.state.lastSeenIndex, 0, taboutRow)
 		}

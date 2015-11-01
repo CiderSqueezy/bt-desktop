@@ -1,5 +1,5 @@
 cx = require "classnames"
-ChatMessage = require "./chat_message"
+ChatMessage = require "./chat_message.jsx"
 
 
 module.exports = React.createClass
