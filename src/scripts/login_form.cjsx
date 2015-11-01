@@ -17,7 +17,7 @@ module.exports = React.createClass
 			pass: @state.pass
 
 	handleChange: (e) ->
-		if e.target == @refs.nick.getDOMNode()
+		if e.target == @refs.nick
 			@setState(nick: e.target.value)
 		else
 			@setState(pass: e.target.value)
@@ -28,11 +28,11 @@ module.exports = React.createClass
 				{if @props.error
 					<span className="alert-danger">{@props.error}</span>}
 				<div className="form-group">
-					<label className="sr-only" for="userInput">Username</label>
+					<label className="sr-only" htmlFor="userInput">Username</label>
 					<input ref="nick" onChange={@handleChange} type="text" className="form-control" id="userInput" placeholder="Username" value={@state.nick} />
 				</div>
 				<div className="form-group">
-					<label className="sr-only" for="passwordInput">Password</label>
+					<label className="sr-only" htmlFor="passwordInput">Password</label>
 					<input ref="pass" onChange={@handleChange} type="password" className="form-control" id="passwordInput" placeholder="Password" value={@state.pass} />
 				</div>
 				<button type="submit" className="btn btn-default">Sign in</button>

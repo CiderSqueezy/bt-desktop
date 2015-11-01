@@ -31,7 +31,7 @@ module.exports = {
           "includePaths[]=" +
             (path.resolve(__dirname, "./node_modules")) },
       // { test: /\.css$/, loaders: ['style', 'css']},
-      { test: /\.jsx$/, exclude: /(node_modules|bower_components)/, loaders: ['react-hot', 'babel']},
+      { test: /\.jsx$/, exclude: /(node_modules|bower_components)/, loaders: ['react-hot', 'babel-loader']},
       { test: /\.cjsx$/, loaders: ['react-hot', 'coffee', 'cjsx']},
       { test: /\.coffee$/, loader: 'coffee' }
     ]

@@ -1,5 +1,5 @@
 TitleBar = require "./title_bar"
-ChatBox = require "./chat_box"
+ChatBox = require "./chat_box.jsx"
 ChatInput = require "./chat_input"
 UserList = require "./user_list"
 Playlist = require "./playlist"
@@ -10,14 +10,12 @@ SqueeInbox = require "./squee_inbox"
 io = require 'socket.io-client'
 _ = require 'underscore'
 
-# window.mockChat = require "./chatlog"
-
 socket = io.connect('berrytube.tv:8344', {
-	'connect timeout': 5000, 
-	'reconnect': true, 
-	'reconnection delay': 500, 
-	'reopen delay': 500, 
-	'max reconnection attempts': 10 
+	'connect timeout': 5000,
+	'reconnect': true,
+	'reconnection delay': 500,
+	'reopen delay': 500,
+	'max reconnection attempts': 10
 })
 
 
@@ -27,7 +25,7 @@ ohMySound = new Audio("sounds/ohmy.wav")
 
 if !window.appState
 	window.appState =
-		emotesEnabled: true	
+		emotesEnabled: true
 		viewer: false
 
 		userlistOpen: false
@@ -51,7 +49,7 @@ if !window.appState
 			drinks: false
 			poll: false
 
-# window.appState.chatMessages = mockChat
+# window.appState.chatMessages = require "./chatlog"
 
 isSquee = (msg) -> appState.viewer && msg.toLowerCase().indexOf(appState.viewer.nick.toLowerCase()) != -1
 
@@ -176,7 +174,7 @@ module.exports = React.createClass
 
 	toggleSqueeList: ->
 		nativeApp?.dock.setBadge("")
-		appState.squeeInboxOpen = !appState.squeeInboxOpen 
+		appState.squeeInboxOpen = !appState.squeeInboxOpen
 		@setState(squeeInboxOpen: appState.squeeInboxOpen)
 
 	toggleEmotes: ->
@@ -253,13 +251,13 @@ module.exports = React.createClass
 		return unless localStorage.getItem("nick") && localStorage.getItem("pass")
 		socket.emit "setNick",
 			nick: localStorage.getItem("nick") || ""
-			pass: localStorage.getItem("pass") || ""	
+			pass: localStorage.getItem("pass") || ""
 		socket.emit('myPlaylistIsInited')
 
 	setNick: (data) ->
-		appState.viewer = 
+		appState.viewer =
 			nick: data
-			pass: localStorage.getItem("pass") || ""	
+			pass: localStorage.getItem("pass") || ""
 		appState.loginError = false
 		@setState
 			viewer: appState.viewer

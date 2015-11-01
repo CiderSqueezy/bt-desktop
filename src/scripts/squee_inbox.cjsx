@@ -1,4 +1,4 @@
-cx = React.addons.classSet
+cx = require "classnames"
 ChatMessage = require "./chat_message"
 
 

@@ -1,6 +1,7 @@
 TimeAgo = require "./timeago"
-cx = React.addons.classSet
+cx = require "classnames"
 wutColors = require "./wutColors"
+ReactDOM = require "react-dom"
 
 
 module.exports = React.createClass
@@ -8,13 +9,13 @@ module.exports = React.createClass
 
 	componentDidMount: ->
 		return unless Bem.doneLoading
-		Bem.postEmoteEffects($(@getDOMNode()))
-	# 	Bem.walk @getDOMNode()
+		Bem.postEmoteEffects($(ReactDOM.findDOMNode(this)))
+	# 	Bem.walk ReactDOM.findDOMNode(this)
 
 	componentDidUpdate: ->
 		return unless Bem.doneLoading
-		Bem.postEmoteEffects($(@getDOMNode()))
-	# 	Bem.walk @getDOMNode()
+		Bem.postEmoteEffects($(ReactDOM.findDOMNode(this)))
+	# 	Bem.walk ReactDOM.findDOMNode(this)
 
 
 	shouldComponentUpdate: (nextProps, nextState) ->

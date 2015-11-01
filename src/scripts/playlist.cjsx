@@ -1,4 +1,5 @@
-cx = React.addons.classSet
+cx = require "classnames"
+ReactDOM = require "react-dom"
 
 module.exports = React.createClass
 	displayName: 'Playlist'
@@ -14,9 +15,9 @@ module.exports = React.createClass
 	# 	nextProps.currentVideo.videoid != @props.currentVideo.videoid || nextProps.playlist
 
 	scrollToActive: (force) ->
-		scroller = @refs.scroller.getDOMNode()
+		scroller = @refs.scroller
 		curScrollTop = scroller.scrollTop
-		scrollerHeight = @getDOMNode().clientHeight
+		scrollerHeight = ReactDOM.findDOMNode(this).clientHeight
 		newScrollTop = (@activeRow * @rowHeight) + @rowHeight/2 - scrollerHeight/2 + 3
 
 		if force || (newScrollTop >= curScrollTop - scrollerHeight/2 && newScrollTop <= curScrollTop + scrollerHeight/2)

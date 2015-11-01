@@ -1,15 +1,15 @@
-cx = React.addons.classSet
+cx = require "classnames"
 
 Poll = React.createClass
 	displayName: 'Poll'
 
 	# componentDidMount: ->
 	# 	return unless Bem.doneLoading
-	# 	Bem.postEmoteEffects($(@getDOMNode()))
+	# 	Bem.postEmoteEffects($(ReactDOM.findDOMNode(this)))
 
 	# componentDidUpdate: ->
 	# 	return unless Bem.doneLoading
-	# 	Bem.postEmoteEffects($(@getDOMNode()))
+	# 	Bem.postEmoteEffects($(ReactDOM.findDOMNode(this)))
 
 	render: ->
 		poll = @props.poll

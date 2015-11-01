@@ -2,7 +2,8 @@
 # the Webpack style-loader.
 require '../styles/main.scss'
 
-React = require 'react/addons'
+React = require 'react'
+ReactDOM = require 'react-dom'
 Bem = require './berrymotes'
 # Assign React to Window so the Chrome React Dev Tools will work.
 window.React = React
@@ -18,5 +19,5 @@ App = require './app'
 #   </Route>
 # )
 # Router.run(routes, (Handler) ->
-React.render <App/>, document.body
+ReactDOM.render <App/>, document.getElementById("app")
 # )

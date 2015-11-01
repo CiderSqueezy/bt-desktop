@@ -70,7 +70,7 @@ module.exports = React.createClass
 			message: @state.message.replace(search, "[](/" + Bem.emotes[emoteId].names[0] + ") ");
 			searchEmoteString: false
 
-		@refs.input.getDOMNode().focus()
+		@refs.input.focus()
 
 
 	render: ->

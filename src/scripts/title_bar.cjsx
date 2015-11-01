@@ -1,6 +1,4 @@
-cx = React.addons.classSet
-
-
+cx = require "classnames"
 
 module.exports = React.createClass
 	displayName: 'TitleBar'
