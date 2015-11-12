@@ -1,11 +1,10 @@
 require("../styles/main.scss")
 
-window.Bem = window.Bem || {}
 window.socket = window.socket || {on(){}}
 var React = require("react/addons")
 window.React = React
 
-var ChatBox = require("./chat_box")
+var ChatBox = require("./chat_box.jsx")
 var ChatInput = require("./chat_input")
 
 var SqueezyChat = React.createClass({

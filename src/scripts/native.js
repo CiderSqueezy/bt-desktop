@@ -1,13 +1,14 @@
 if(window.require) {
-	window.ipc = require('ipc')
-	window.nativeApp = require('remote').require('app');
+	window.ipc = require("ipc")
+	window.nativeApp = require("remote").require("app")
+	var spellchecker = require("remote").require("spellchecker")
 
-	require('web-frame').setSpellCheckProvider("en-US", false, {
+	require("web-frame").setSpellCheckProvider("en-US", false, {
 		spellCheck: function(text) {
 			console.log("Spellcheck", text)
-			return !(require('spellchecker').isMisspelled(text));
+			return !spellchecker.isMisspelled(text)
 		}
-	});
+	})
 
 	// var remote = require('remote');
 	// var Menu = remote.require('menu');
@@ -19,6 +20,6 @@ if(window.require) {
 	//   e.preventDefault();
 	//   menu.popup(remote.getCurrentWindow());
 	// }, false);
-	// 
-	// 
+	//
+	//
 }

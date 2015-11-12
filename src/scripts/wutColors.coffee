@@ -8,7 +8,9 @@ hashCode = (str) ->
 	hash
 
 window.wutUserColors = []
-$.getScript("http://btc.berrytube.tv/wut/wutColors/usercolors.js")
+s = document.createElement("script")
+s.src = "http://btc.berrytube.tv/wut/wutColors/usercolors.js"
+document.body.appendChild(s)
 
 module.exports =
 	hashCode: hashCode
@@ -22,4 +24,3 @@ module.exports =
 			l = Math.abs(hash)%15 + 35
 			a = 1
 			"hsla("+h+","+s+"%,"+l+"%,"+a+")"
-

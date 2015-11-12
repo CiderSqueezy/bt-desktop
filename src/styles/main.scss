@@ -72,9 +72,8 @@ html, body, #main-container, #app {
 		line-height: 20px;
 		color: #444;
 		padding-right: 205px;
-		// width: 100%;
-		// height: 20px;
-		// overflow: hidden;
+		height: 20px;
+		overflow: hidden;
 	}
 
 	.notify, .notify a{
@@ -178,10 +177,11 @@ html, body, #main-container, #app {
 		.votes {
 			border: 2px solid #444;
 			padding: 5px;
-			min-width: 30px;
+			min-width: 40px;
 			display: inline-block;
 			text-align: center;
 			cursor: pointer;
+			margin-right: 10px;
 			&.voted {
 				border-width: 4px;
 			}
@@ -213,6 +213,8 @@ html, body, #main-container, #app {
 		z-index: 100;
 		overflow: auto;
 		border-left: 1px solid #eaeaea;
+		box-shadow: 0 0 5px 0 rgba(0,0,0,0.2);
+		border-top: 1px solid #eee;
 		ul {
 			padding-left: 1em;
 			margin: 0;
@@ -331,8 +333,8 @@ html, body, #main-container, #app {
 			background-color: white;
 			border-top: 1px solid #eaeaea;
 			-webkit-box-shadow: 0 0 3px;
-			div {
-				display: inline-block;
+			> span {
+				display: inline-block !important;
 				margin-right: 2px;
 			}
 		}
@@ -372,7 +374,7 @@ html, body, #main-container, #app {
 	padding: 11px 90px 11px 0;
 
 	.thumbnail {
-		height: 110px;
+		height: 150px;
 		width: auto;
 		display: inline-block;
 		vertical-align: bottom;
@@ -381,6 +383,7 @@ html, body, #main-container, #app {
 		padding: 4px;
 		position: relative;
 		box-shadow: 0 0 4px #eee;
+		background: white;
 		&.yt {
 			border-color: red;
 		}
@@ -445,8 +448,10 @@ html, body, #main-container, #app {
 	}
 	.spoiler {
 		background-color: #262626;
+		color: #262626 !important;
+		padding: 0 5px;
 		&:hover {
-			color: white;
+			color: white !important;
 		}
 	}
 
@@ -521,7 +526,18 @@ html, body, #main-container, #app {
 	}
 }
 
-
+a:focus, a:hover {
+  color: #23527c;
+  text-decoration: underline;
+}
+a:active, a:hover {
+  outline: 0;
+}
+a {
+  color: #337ab7;
+  text-decoration: none;
+  background-color: transparent;
+}
 button, input, select, textarea {
     font-family: inherit;
     font-size: inherit;

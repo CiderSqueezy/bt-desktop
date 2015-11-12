@@ -7,7 +7,7 @@ module.exports = React.createClass
 
 	renderMessage: (msg) ->
 		<ChatMessage
-			renderEmotes={@props.emotesEnabled && Bem.doneLoading}
+			renderEmotes={@props.emotesEnabled}
 			msg={msg}
 			key={msg.timestamp+msg.nick}/>
 

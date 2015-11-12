@@ -1,5 +1,6 @@
 _ = require("underscore")
-EmoteSearch = require "./emote_search"
+EmoteSearch = require "./emote_search.jsx"
+Bem = require "./berrymotes.jsx"
 
 escapeForRegex = (word) ->
 	word.replace('[', '\\[').replace('(','\\(').replace('/', '\\/')
@@ -67,7 +68,7 @@ module.exports = React.createClass
 	handleEmoteSelected: (emoteId) ->
 		search = new RegExp("/" + @state.searchEmoteString + "$", "gi");
 		@setState
-			message: @state.message.replace(search, "[](/" + Bem.emotes[emoteId].names[0] + ") ");
+			message: @state.message.replace(search, "[](/" + emoteId + ") ");
 			searchEmoteString: false
 
 		@refs.input.focus()

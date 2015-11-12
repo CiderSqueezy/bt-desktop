@@ -1,4 +1,5 @@
 cx = require "classnames"
+Bem = require "./berrymotes.jsx"
 
 module.exports = React.createClass
 	displayName: 'TitleBar'

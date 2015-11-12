@@ -4,7 +4,6 @@ require '../styles/main.scss'
 
 React = require 'react'
 ReactDOM = require 'react-dom'
-Bem = require './berrymotes'
 # Assign React to Window so the Chrome React Dev Tools will work.
 window.React = React
 

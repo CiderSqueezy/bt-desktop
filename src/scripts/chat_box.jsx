@@ -1,13 +1,16 @@
 var ChatMessage = require("./chat_message.jsx")
 var React = require("react")
+let Bem = require("./berrymotes.jsx")
 
 module.exports = class ChatBox extends React.Component {
 	constructor(props) {
 		super(props)
+		this.shouldScrollBottom = true
 		this.state = {
 			selectedNick: false,
 			lastSeenIndex: 0
 		}
+		Bem.on("update", this.componentDidUpdate.bind(this))
 	}
 
 	componentDidMount() {
@@ -66,7 +69,7 @@ module.exports = class ChatBox extends React.Component {
 				<ChatMessage
 					highlighted={msg.nick == this.state.selectedNick}
 					seoncdaryHighlighted={msg.msg.indexOf(this.state.selectedNick) != -1}
-					renderEmotes={this.props.emotesEnabled && Bem.doneLoading && i > renderEmoteIndex}
+					renderEmotes={this.props.emotesEnabled && i > renderEmoteIndex}
 					onSelectNick={this.selectNick.bind(this)}
 					msg={msg}
 					key={msg.timestamp+msg.nick+i}/>

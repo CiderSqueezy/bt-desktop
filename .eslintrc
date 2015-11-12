@@ -29,7 +29,6 @@
         "commonjs": true
     },
     "globals" : {
-        "Bem": true,
         "$": true
     },
     "extends": "eslint:recommended",
