@@ -110,13 +110,13 @@ gulp.task 'watch', ['copy-assets', 'webpack-dev-server'], ->
 
 
 
- 
+
 gulp.task 'package-native-mac', ["build"], ->
     atomshell = require('gulp-atom-shell');
     return gulp.src(['public/**', "package.json", "main.js"])
         .pipe(atomshell({
             platform: "darwin"
-            version: '0.21.2'
+            version: '0.34.3'
             productName: 'BerryTube'
             productVersion: '0.0.1'
             darwinIcon: "bt.icns"
@@ -128,10 +128,9 @@ gulp.task 'package-native-win', ["build"], ->
     return gulp.src(['public/**', "package.json", "main.js"])
         .pipe(atomshell({
             platform: "win32"
-            version: '0.21.2'
+            version: '0.34.3'
             productName: 'BerryTube'
             productVersion: '0.0.1'
             winIcon: "bt.ico"
         }))
         .pipe(atomshell.zfsdest('dist/BerryTube.win.zip'));
-
