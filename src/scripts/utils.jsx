@@ -1,4 +1,5 @@
 let Emote = require("./emote.jsx")
+let {EmoteParser} = require("emotes")
 
 let mapAlternate = function(array, fn1, fn2, thisArg) {
 	var fn = fn1, output = []
@@ -11,12 +12,10 @@ let mapAlternate = function(array, fn1, fn2, thisArg) {
 	return output
 }
 
-let emoteRegex = /(\[\]\(\/[\w:!#\/]+[-\w!]*[^)]*\))/gi
-
 let Utils = {
 	mapAlternate: mapAlternate,
 	componentizeString: function(s) {
-		let ret = mapAlternate(s.split(emoteRegex), function(s) {
+		let ret = mapAlternate(s.split(EmoteParser.emoteParseRegexp), function(s) {
 			return s
 		}, function(s,i) {
 			return <Emote emote={s} key={`emote${i}}`}/>
