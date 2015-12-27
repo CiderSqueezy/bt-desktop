@@ -22,6 +22,7 @@ let Bem = ee({
 			this.emit("update")
 		})
 	},
+	map,
 	applyEmotesToStr: function(str){ return str},
 	findEmote: function(emoteId){
 		return map && map.findEmote(emoteId)
