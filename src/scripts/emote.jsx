@@ -7,38 +7,36 @@ let APNG = window.APNG
 let Bem = require("./berrymotes.jsx")
 let {EmoteParser, EmoteHtml} = require("emotes")
 let parser = new EmoteParser()
-let html = new EmoteHtml(Bem.map)
+let html = Bem.map && new EmoteHtml(Bem.map)
 const MAX_HEIGHT = 200
 
 module.exports = class Emote extends React.Component {
 	constructor(props) {
 		super(props)
-		var emoteIdentifier, originalString, htmlOutputData
+		html = Bem.map && new EmoteHtml(Bem.map)
 		// emoteId will be set when this is used via search results
-		if(props.emoteId) {
-			emoteIdentifier = props.emoteId
-			originalString = props.emoteId
-			htmlOutputData = html.getEmoteHtmlMetadataForEmoteName(props.emoteId)
-		} else {
-			let emoteObject = parser.parse(props.emote)
-			emoteIdentifier = emoteObject.emoteIdentifier
-			originalString = emoteObject.originalString
-			htmlOutputData = html.getEmoteHtmlMetadataForObject(emoteObject)
-		}
-		this.state = {
-			originalString,
-			emoteIdentifier,
-			htmlOutputData,
-			emoteData: Bem.findEmote(emoteIdentifier)
-		}
+
+		var emoteToParse = props.emote || `[](/${props.emoteId})`
+		this.setStateFromEmoteString(emoteToParse)
 		Bem.on("update", this.onEmoteUpdate.bind(this))
 	}
 
+	setStateFromEmoteString(emoteString) {
+		var emoteIdentifier, originalString, htmlOutputData
+		let emoteObject = parser.parse(emoteString)
+		emoteIdentifier = emoteObject.emoteIdentifier
+		originalString = emoteObject.originalString
+		htmlOutputData = html && html.getEmoteHtmlMetadataForObject(emoteObject)
+		this.state = {
+			originalString,
+			emoteIdentifier,
+			htmlOutputData
+		}
+	}
+
 	onEmoteUpdate() {
-		this.setState({
-			emoteData: Bem.findEmote(this.state.emoteIdentifier),
-			htmlOutputData: html.getEmoteHtmlMetadataForEmoteName(this.state.emoteIdentifier)
-		})
+		html = html || new EmoteHtml(Bem.map)
+		setStateFromEmoteString(this.state.originalString)
 	}
 
 	componentDidMount() {
@@ -68,75 +66,75 @@ module.exports = class Emote extends React.Component {
 	}
 
 	render() {
-		let emoteData = this.state.emoteData
 		let htmlOutputData = this.state.htmlOutputData
-
 		if(!htmlOutputData) {
 			return <span>{this.state.originalString}</span>
-		} else {
+		}
 
-			// emotes have berryemote class set automatically, but we need berrymotes set as well
-			let className = htmlOutputData.cssClassesForEmoteNode
-			className['berrymotes'] = true
+		let emoteData = this.state.htmlOutputData.emoteData
 
+
+		// emotes have berryemote class set automatically, but we need berrymotes set as well
+		let className = htmlOutputData.cssClassesForEmoteNode
+		className['berrymotes'] = true
+
+		// workaround for the emotes package not currently just setting the properties directly
+		let emoteNodeStyle  = {}
+		htmlOutputData.cssStylesForEmoteNode.forEach((st) => {
+			emoteNodeStyle[st.propertyName] = st.propertyValue
+		})
+
+		let emoteNode = (
+			<span ref="emote"
+						onClick={this.props.emoteSelected && this.props.emoteSelected.bind(this, this.props.emoteIdentifier)}
+						className={cx(className)}
+						title={htmlOutputData.titleForEmoteNode}
+						style={emoteNodeStyle}/>
+		)
+
+		// provide a wrapper node if necessary to apply the styles/classes from the 'parent node' info
+		if (htmlOutputData.cssClassesForParentNode.length > 0 || htmlOutputData.cssStylesForParentNode.length > 0) {
 			// workaround for the emotes package not currently just setting the properties directly
-			let emoteNodeStyle  = {}
-			htmlOutputData.cssStylesForEmoteNode.forEach((st) => {
-				emoteNodeStyle[st.propertyName] = st.propertyValue
+			let parentNodeStyle  = {}
+			htmlOutputData.cssStylesForParentNode.forEach((st) => {
+				parentNodeStyle[st.propertyName] = st.propertyValue
 			})
 
-			let emoteNode = (
-				<span ref="emote"
-							onClick={this.props.emoteSelected && this.props.emoteSelected.bind(this, this.props.emoteIdentifier)}
-							className={cx(className)}
-							title={htmlOutputData.titleForEmoteNode}
-							style={emoteNodeStyle}/>
+			emoteNode = (
+				<span className={cx(htmlOutputData.cssClassesForParentNode)} style={parentNodeStyle}>
+					{emoteNode}
+				</span>
 			)
+		}
 
-			// provide a wrapper node if necessary to apply the styles/classes from the 'parent node' info
-			if (htmlOutputData.cssClassesForParentNode.length > 0 || htmlOutputData.cssStylesForParentNode.length > 0) {
-				// workaround for the emotes package not currently just setting the properties directly
-				let parentNodeStyle  = {}
-				htmlOutputData.cssStylesForParentNode.forEach((st) => {
-					parentNodeStyle[st.propertyName] = st.propertyValue
-				})
+		// provide wrapping to implement scaling down to meet MAX_HEIGHT requirement
+		if (emoteData.height > MAX_HEIGHT) {
+			let scale = MAX_HEIGHT/emoteData.height
 
-				emoteNode = (
-					<span className={cx(htmlOutputData.cssClassesForParentNode)} style={parentNodeStyle}>
+			let outerWrapperStyle = {
+				height: MAX_HEIGHT,
+				width: emoteData.width * scale,
+				position: "relative",
+				display: "inline-block"
+			}
+
+			let innerWrapperStyle = {
+				transform: `scale(${scale})`,
+				transformOrigin: "left top 0px",
+				position: "absolute",
+				top: 0,
+				left: 0
+			}
+
+			emoteNode = (
+				<span className="berrymotes-wrapper-outer" style={outerWrapperStyle}>
+					<span className="berrymotes-wrapper" style={innerWrapperStyle}>
 						{emoteNode}
 					</span>
-				)
-			}
-
-			// provide wrapping to implement scaling down to meet MAX_HEIGHT requirement
-			if (emoteData.height > MAX_HEIGHT) {
-				let scale = MAX_HEIGHT/emoteData.height
-
-				let outerWrapperStyle = {
-					height: MAX_HEIGHT,
-					width: emoteData.width * scale,
-					position: "relative",
-					display: "inline-block"
-				}
-
-				let innerWrapperStyle = {
-					transform: `scale(${scale})`,
-					transformOrigin: "left top 0px",
-					position: "absolute",
-					top: 0,
-					left: 0
-				}
-
-				emoteNode = (
-					<span className="berrymotes-wrapper-outer" style={outerWrapperStyle}>
-						<span className="berrymotes-wrapper" style={innerWrapperStyle}>
-							{emoteNode}
-						</span>
-					</span>
-				)
-			}
-
-			return emoteNode
+				</span>
+			)
 		}
+
+		return emoteNode
 	}
 }

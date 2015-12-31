@@ -19,6 +19,7 @@ let Bem = ee({
 				}
 			})
 			map = new EmoteMap(rawEmotes)
+			this.map = map
 			this.emit("update")
 		})
 	},
@@ -157,5 +158,25 @@ let Bem = ee({
 })
 
 Bem.dataRefresh()
+
+// copied from http://berrymotes.com/berrymotes.berrytube.js?_=1451435285149
+// included to support -invert and -i emote flags
+if (document.body.style.webkitFilter !== undefined) {
+		const invertScript = document.createElement('script');
+		invertScript.type = 'text/javascript';
+		invertScript.src = 'http://berrymotes.com/assets/berrymotes.webkit.invert.js';
+		document.body.appendChild(invertScript);
+} else {
+		const invertScript = document.createElement('script');
+		invertScript.type = 'text/javascript';
+		invertScript.src = 'http://berrymotes.com/assets/berrymotes.invertfilter.js';
+		document.body.appendChild(invertScript);
+}
+
+const berrymoteCoreCss = document.createElement('link')
+berrymoteCoreCss.setAttribute('rel', 'stylesheet')
+berrymoteCoreCss.setAttribute('type', 'text/css')
+berrymoteCoreCss.setAttribute('href', 'http://berrymotes.com/assets/berrymotes.core.css')
+document.getElementsByTagName("head")[0].appendChild(berrymoteCoreCss)
 
 module.exports = Bem
