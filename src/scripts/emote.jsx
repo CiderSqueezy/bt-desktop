@@ -14,8 +14,8 @@ module.exports = class Emote extends React.Component {
 	constructor(props) {
 		super(props)
 		html = Bem.map && new EmoteHtml(Bem.map)
-		// emoteId will be set when this is used via search results
 
+		// emoteId will be set when this is used via search results
 		var emoteToParse = props.emote || `[](/${props.emoteId})`
 		this.setStateFromEmoteString(emoteToParse)
 		Bem.on("update", this.onEmoteUpdate.bind(this))
@@ -73,35 +73,18 @@ module.exports = class Emote extends React.Component {
 
 		let emoteData = this.state.htmlOutputData.emoteData
 
-
-		// emotes have berryemote class set automatically, but we need berrymotes set as well
-		let className = htmlOutputData.cssClassesForEmoteNode
-		className['berrymotes'] = true
-
-		// workaround for the emotes package not currently just setting the properties directly
-		let emoteNodeStyle  = {}
-		htmlOutputData.cssStylesForEmoteNode.forEach((st) => {
-			emoteNodeStyle[st.propertyName] = st.propertyValue
-		})
-
 		let emoteNode = (
 			<span ref="emote"
 						onClick={this.props.emoteSelected && this.props.emoteSelected.bind(this, this.props.emoteIdentifier)}
-						className={cx(className)}
+						className={cx(htmlOutputData.cssClassesForEmoteNode)}
 						title={htmlOutputData.titleForEmoteNode}
-						style={emoteNodeStyle}/>
+						style={htmlOutputData.cssStylesForEmoteNode}/>
 		)
 
 		// provide a wrapper node if necessary to apply the styles/classes from the 'parent node' info
-		if (htmlOutputData.cssClassesForParentNode.length > 0 || htmlOutputData.cssStylesForParentNode.length > 0) {
-			// workaround for the emotes package not currently just setting the properties directly
-			let parentNodeStyle  = {}
-			htmlOutputData.cssStylesForParentNode.forEach((st) => {
-				parentNodeStyle[st.propertyName] = st.propertyValue
-			})
-
+		if (htmlOutputData.cssClassesForParentNode.length > 0 || htmlOutputData.cssStylesForParentNode) {
 			emoteNode = (
-				<span className={cx(htmlOutputData.cssClassesForParentNode)} style={parentNodeStyle}>
+				<span className={cx(htmlOutputData.cssClassesForParentNode)} style={htmlOutputData.cssStylesForParentNode}>
 					{emoteNode}
 				</span>
 			)
