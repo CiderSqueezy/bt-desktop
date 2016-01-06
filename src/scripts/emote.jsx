@@ -17,17 +17,17 @@ module.exports = class Emote extends React.Component {
 
 		// emoteId will be set when this is used via search results
 		var emoteToParse = props.emote || `[](/${props.emoteId})`
-		this.setStateFromEmoteString(emoteToParse)
+		this.state = this.getStateFromEmoteString(emoteToParse)
 		Bem.on("update", this.onEmoteUpdate.bind(this))
 	}
 
-	setStateFromEmoteString(emoteString) {
+	getStateFromEmoteString(emoteString) {
 		var emoteIdentifier, originalString, htmlOutputData
 		let emoteObject = parser.parse(emoteString)
 		emoteIdentifier = emoteObject.emoteIdentifier
 		originalString = emoteObject.originalString
 		htmlOutputData = html && html.getEmoteHtmlMetadataForObject(emoteObject)
-		this.state = {
+		return {
 			originalString,
 			emoteIdentifier,
 			htmlOutputData
@@ -36,7 +36,8 @@ module.exports = class Emote extends React.Component {
 
 	onEmoteUpdate() {
 		html = html || new EmoteHtml(Bem.map)
-		setStateFromEmoteString(this.state.originalString)
+		let state = this.getStateFromEmoteString(this.state.originalString)
+		this.setState(state)
 	}
 
 	componentDidMount() {
@@ -73,12 +74,26 @@ module.exports = class Emote extends React.Component {
 
 		let emoteData = this.state.htmlOutputData.emoteData
 
+		let textNodes = []
+
+		if (htmlOutputData.emText) {
+			textNodes.push(<em style={htmlOutputData.emStyles}>{htmlOutputData.emText}</em>)
+		}
+		if (htmlOutputData.strongText) {
+			textNodes.push(<strong style={htmlOutputData.strongStyles}>{htmlOutputData.strongText}</strong>)
+		}
+		if (htmlOutputData.altText) {
+			textNodes.push(htmlOutputData.altText)
+		}
+
 		let emoteNode = (
 			<span ref="emote"
 						onClick={this.props.emoteSelected && this.props.emoteSelected.bind(this, this.props.emoteIdentifier)}
 						className={cx(htmlOutputData.cssClassesForEmoteNode)}
 						title={htmlOutputData.titleForEmoteNode}
-						style={htmlOutputData.cssStylesForEmoteNode}/>
+						style={htmlOutputData.cssStylesForEmoteNode}>
+				{textNodes}
+			</span>
 		)
 
 		// provide a wrapper node if necessary to apply the styles/classes from the 'parent node' info
