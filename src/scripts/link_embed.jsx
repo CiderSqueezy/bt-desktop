@@ -12,7 +12,7 @@ let embed_providers = [{
 	// need to make sure we match the supported domain spaces - see https://derpibooru.org/pages/api
 	cleanUrl: url => url
 			.replace("//www.", "//")
-			.replace("http://", "https://");
+			.replace("http://", "https://")
 }]
 
 module.exports = class LinkEmbed extends React.Component {
