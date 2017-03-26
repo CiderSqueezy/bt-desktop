@@ -7,8 +7,12 @@ let embed_providers = [{
 	url: "http://backend.deviantart.com/oembed",
 	format: "jsonp"
 }, {
-	match: /(derpicdn|trixiebooru|derpiboo)\.(ru|org|net)/i,
-	url: "https://derpiboo.ru/oembed.json"
+	match: /(derpicdn|trixiebooru|derpiboo|derpibooru)\.(ru|org|net)/i,
+	url: "https://derpibooru.org/oembed.json",
+	// need to make sure we match the supported domain spaces - see https://derpibooru.org/pages/api
+	cleanUrl: url => url
+			.replace("//www.", "//")
+			.replace("http://", "https://");
 }]
 
 module.exports = class LinkEmbed extends React.Component {
@@ -30,7 +34,11 @@ module.exports = class LinkEmbed extends React.Component {
 				if(regex.test(props.url)) {
 					let url = provider.url
 					let format = provider.format || "json"
-					let req = SuperAgent.get(`${url}?maxheight=150&format=${format}&url=${window.encodeURIComponent(this.props.url)}`)
+					let urlForLookup = this.props.url;
+					if (provider.cleanUrl) {
+						urlForLookup = provider.cleanUrl(urlForLookup);
+					}
+					let req = SuperAgent.get(`${url}?maxheight=150&format=${format}&url=${window.encodeURIComponent(urlForLookup)}`)
 					if(format == "jsonp") {
 						req.use(jsonp)
 					}
