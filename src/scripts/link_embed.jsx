@@ -3,7 +3,7 @@ let SuperAgent = require("superagent")
 let jsonp = require("superagent-jsonp")
 
 let embed_providers = [{
-	match: /(.*\.)?deviantart\.com/i,
+	match: /(deviantart\.com|fav\.me)/i,
 	url: "http://backend.deviantart.com/oembed",
 	format: "jsonp"
 }, {
