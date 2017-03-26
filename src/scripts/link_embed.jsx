@@ -13,6 +13,10 @@ let embed_providers = [{
 	cleanUrl: url => url
 			.replace("//www.", "//")
 			.replace("http://", "https://")
+}, {
+	match: /.*/i,
+	url: "https://noembed.com/embed",
+	format: "jsonp"
 }]
 
 module.exports = class LinkEmbed extends React.Component {
