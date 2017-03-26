@@ -17,7 +17,7 @@ let embed_providers = [{
 
 module.exports = class LinkEmbed extends React.Component {
 	constructor(props) {
-		super(props)
+		super(props) 
 		this.state = {
 			title: props.url
 		}
@@ -72,7 +72,7 @@ module.exports = class LinkEmbed extends React.Component {
 				</a>
 			)
 		} else {
-			return <a href={url} target='_blank'>{url}</a>
+			return <a href={url} ref={(link) => { this.link = link; }} target='_blank'>{url}</a>
 		}
 	}
 }
