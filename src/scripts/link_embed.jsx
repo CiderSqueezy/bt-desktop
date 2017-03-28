@@ -48,9 +48,10 @@ module.exports = class LinkEmbed extends React.Component {
 					}
 					req.end(function(err, res) {
 						if(err || !res) {
-							console.error(err)
+						  console.error('urlForLookup', urlForLookup, 'err', err)
 							return
 						}
+						console.log('urlForLookup', urlForLookup, 'res.body', res.body)
 						var data = res.body
 						if (data) {
 							this.setState({
