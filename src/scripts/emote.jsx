@@ -5,34 +5,39 @@ let _APNG = require("apng-canvas")
 let APNG = window.APNG
 
 let Bem = require("./berrymotes.jsx")
-let {EmoteParser} = require("emotes")
+let {EmoteParser, EmoteHtml} = require("emotes")
 let parser = new EmoteParser()
+let html = Bem.map && new EmoteHtml(Bem.map)
 const MAX_HEIGHT = 200
 
 module.exports = class Emote extends React.Component {
 	constructor(props) {
 		super(props)
-		var emoteIdentifier, originalString
-		if(props.emoteId) {
-			emoteIdentifier = props.emoteId
-			originalString = props.emoteId
-		} else {
-			let emoteObject = parser.parse(props.emote)
-			emoteIdentifier = emoteObject.emoteIdentifier
-			originalString = emoteObject.originalString
-		}
-		this.state = {
-			originalString,
-			emoteIdentifier,
-			emoteData: Bem.findEmote(emoteIdentifier)
-		}
+		html = Bem.map && new EmoteHtml(Bem.map)
+
+		// emoteId will be set when this is used via search results
+		var emoteToParse = props.emote || `[](/${props.emoteId})`
+		this.state = this.getStateFromEmoteString(emoteToParse)
 		Bem.on("update", this.onEmoteUpdate.bind(this))
 	}
 
+	getStateFromEmoteString(emoteString) {
+		var emoteIdentifier, originalString, htmlOutputData
+		let emoteObject = parser.parse(emoteString)
+		emoteIdentifier = emoteObject.emoteIdentifier
+		originalString = emoteObject.originalString
+		htmlOutputData = html && html.getEmoteHtmlMetadataForObject(emoteObject)
+		return {
+			originalString,
+			emoteIdentifier,
+			htmlOutputData
+		}
+	}
+
 	onEmoteUpdate() {
-		this.setState({
-			emoteData: Bem.findEmote(this.state.emoteIdentifier)
-		})
+		html = html || new EmoteHtml(Bem.map)
+		let state = this.getStateFromEmoteString(this.state.originalString)
+		this.setState(state)
 	}
 
 	componentDidMount() {
@@ -62,20 +67,56 @@ module.exports = class Emote extends React.Component {
 	}
 
 	render() {
-		let emoteData = this.state.emoteData
-		if(!emoteData) {
+		let htmlOutputData = this.state.htmlOutputData
+		if(!htmlOutputData) {
 			return <span>{this.state.originalString}</span>
-		} else {
+		}
 
-			let title = `${(emoteData.names||[]).join(",")} from /r/${emoteData.sr}`
-			let className = {
-				"berrymotes": true,
-				"nsfw": emoteData.nsfw
+		let emoteData = this.state.htmlOutputData.emoteData
+
+		let textNodes = []
+
+		if (htmlOutputData.emText) {
+			textNodes.push(<em style={htmlOutputData.emStyles}>{htmlOutputData.emText}</em>)
+		}
+		if (htmlOutputData.strongText) {
+			textNodes.push(<strong style={htmlOutputData.strongStyles}>{htmlOutputData.strongText}</strong>)
+		}
+		if (htmlOutputData.altText) {
+			textNodes.push(htmlOutputData.altText)
+		}
+
+		let emoteNode = (
+			<span ref="emote"
+						onClick={this.props.emoteSelected && this.props.emoteSelected.bind(this, this.props.emoteIdentifier)}
+						className={cx(htmlOutputData.cssClassesForEmoteNode)}
+						title={htmlOutputData.titleForEmoteNode}
+						style={htmlOutputData.cssStylesForEmoteNode}>
+				{textNodes}
+			</span>
+		)
+
+		// provide a wrapper node if necessary to apply the styles/classes from the 'parent node' info
+		if (htmlOutputData.cssClassesForParentNode.length > 0 || htmlOutputData.cssStylesForParentNode) {
+			emoteNode = (
+				<span className={cx(htmlOutputData.cssClassesForParentNode)} style={htmlOutputData.cssStylesForParentNode}>
+					{emoteNode}
+				</span>
+			)
+		}
+
+		// provide wrapping to implement scaling down to meet MAX_HEIGHT requirement
+		if (emoteData.height > MAX_HEIGHT) {
+			let scale = MAX_HEIGHT/emoteData.height
+
+			let outerWrapperStyle = {
+				height: MAX_HEIGHT,
+				width: emoteData.width * scale,
+				position: "relative",
+				display: "inline-block"
 			}
 
-			let scale = emoteData.height > MAX_HEIGHT ? MAX_HEIGHT/emoteData.height : 1
-
-			let outerStyle = {
+			let innerWrapperStyle = {
 				transform: `scale(${scale})`,
 				transformOrigin: "left top 0px",
 				position: "absolute",
@@ -83,35 +124,15 @@ module.exports = class Emote extends React.Component {
 				left: 0
 			}
 
-			let style  = {
-				height: `${emoteData.height}px`,
-				width: `${emoteData.width}px`,
-				display: "inline-block",
-				position: "relative",
-				overflow: "hidden",
-				backgroundPosition: (emoteData["background-position"] || ["0px", "0px"]).join(" "),
-				backgroundImage: `url(${emoteData["background-image"]})`
-			}
-
-			let emoteNode = <span ref="emote" onClick={this.props.emoteSelected && this.props.emoteSelected.bind(this, this.props.emoteIdentifier)} className={cx(className)} title={title} style={style}/>
-			if(scale < 1) {
-				var outerWrapperStyle = {
-					height: MAX_HEIGHT,
-					width: emoteData.width * scale,
-					position: "relative",
-					display: "inline-block"
-				}
-
-				return (
-					<span className="berrymotes-wrapper-outer" style={outerWrapperStyle}>
-						<span className="berrymotes-wrapper" style={outerStyle}>
-							{emoteNode}
-						</span>
+			emoteNode = (
+				<span className="berrymotes-wrapper-outer" style={outerWrapperStyle}>
+					<span className="berrymotes-wrapper" style={innerWrapperStyle}>
+						{emoteNode}
 					</span>
-				)
-			} else {
-				return emoteNode
-			}
+				</span>
+			)
 		}
+
+		return emoteNode
 	}
 }

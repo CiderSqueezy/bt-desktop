@@ -3,17 +3,25 @@ let SuperAgent = require("superagent")
 let jsonp = require("superagent-jsonp")
 
 let embed_providers = [{
-	match: /(.*\.)?deviantart\.com/i,
+	match: /(deviantart\.com|fav\.me)/i,
 	url: "http://backend.deviantart.com/oembed",
 	format: "jsonp"
 }, {
-	match: /(derpicdn|trixiebooru|derpiboo)\.(ru|org|net)/i,
-	url: "https://derpiboo.ru/oembed.json"
+	match: /(derpicdn|trixiebooru|derpiboo|derpibooru)\.(ru|org|net)/i,
+	url: "https://derpibooru.org/oembed.json",
+	// need to make sure we match the supported domain spaces - see https://derpibooru.org/pages/api
+	cleanUrl: url => url
+			.replace("//www.", "//")
+			.replace("http://", "https://")
+}, {
+	match: /.*/i,
+	url: "https://noembed.com/embed",
+	format: "jsonp"
 }]
 
 module.exports = class LinkEmbed extends React.Component {
 	constructor(props) {
-		super(props)
+		super(props) 
 		this.state = {
 			title: props.url
 		}
@@ -30,15 +38,20 @@ module.exports = class LinkEmbed extends React.Component {
 				if(regex.test(props.url)) {
 					let url = provider.url
 					let format = provider.format || "json"
-					let req = SuperAgent.get(`${url}?maxheight=150&format=${format}&url=${window.encodeURIComponent(this.props.url)}`)
+					let urlForLookup = this.props.url;
+					if (provider.cleanUrl) {
+						urlForLookup = provider.cleanUrl(urlForLookup);
+					}
+					let req = SuperAgent.get(`${url}?maxheight=150&format=${format}&url=${window.encodeURIComponent(urlForLookup)}`)
 					if(format == "jsonp") {
 						req.use(jsonp)
 					}
 					req.end(function(err, res) {
 						if(err || !res) {
-							console.error(err)
+						  console.error('urlForLookup', urlForLookup, 'err', err)
 							return
 						}
+						console.log('urlForLookup', urlForLookup, 'res.body', res.body)
 						var data = res.body
 						if (data) {
 							this.setState({
@@ -64,7 +77,7 @@ module.exports = class LinkEmbed extends React.Component {
 				</a>
 			)
 		} else {
-			return <a href={url} target='_blank'>{url}</a>
+			return <a href={url} ref={(link) => { this.link = link; }} target='_blank'>{url}</a>
 		}
 	}
 }

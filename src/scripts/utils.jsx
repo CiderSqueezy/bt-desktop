@@ -11,7 +11,7 @@ let mapAlternate = function(array, fn1, fn2, thisArg) {
 	return output
 }
 
-let emoteRegex = /(\[\]\(\/[\w:!#\/]+[-\w!]*[^)]*\))/gi
+let emoteRegex = /(\[[^\]]*\]\(\/[\w:!#\/]+[-\w!]*[^)]*\))/gi
 
 let Utils = {
 	mapAlternate: mapAlternate,
